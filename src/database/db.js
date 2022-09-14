@@ -6,8 +6,14 @@ dotenv.config()
 const mongoClient = new MongoClient(process.env.MONGO_URI);
 let db;
 
-mongoClient.connect().then(() => {
+try {
+	await mongoClient.connect();
 	db = mongoClient.db("geekstore");
-});
+
+
+	console.log('DataBase online')
+}catch(err){
+	console.log('It was not possible to connect with the database!'.err)
+}
 
 export {db}
