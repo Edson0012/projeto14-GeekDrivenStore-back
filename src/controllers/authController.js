@@ -29,7 +29,25 @@ export async function signUp (req , res){
 
 export async function signIn (req , res){
     try{
-        return res.send('ok')
+        const { email, password } = req.body;
+        const user = await db.collection("users").findOne({ email });
+        if (user && bcrypt.compareSync(password, user.password)) {
+          const token = uuid();
+          const email = user.email;
+          const name = user.name;
+          const cep = user.cep;
+          const rdn = user.rdn;
+          const phone = user.phone;
+
+          await db.collection("sessions").insertOne({
+            email,
+            token,
+          });
+  
+         return res.status(200).send({email, token, name, cep, rdn, phone });
+        } else {
+          return res.status(401).send("Email ou senha incorretos!");
+        }
     }catch(err){
         return res.status(500).send('error no servidor')
     }
