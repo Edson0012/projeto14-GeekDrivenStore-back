@@ -1,4 +1,4 @@
-import express from "express";
+import express from "express"
 import cors from "cors";
 import dotenv from "dotenv";
 import authRouter from './routers/authRouter.js';
@@ -12,5 +12,4 @@ app.use(express.json())
 app.use(authRouter);
 app.use(productRouter);
 
-const PORT = process.env.PORT
-app.listen(PORT || 5000, () => console.log(`server listen on port ${PORT}`))
+export default app;
