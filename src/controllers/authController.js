@@ -4,7 +4,21 @@ import { v4 as uuid} from "uuid";
 
 export async function signUp (req , res){
     try{
-        return res.send('ok')
+        const user  = req.body;
+        const confirmUser = await db.collection('users').findOne({email: user.email});
+        if (confirmUser){
+           return res.sendStatus(409) 
+        }
+
+        const passwordHash = bcrypt.hashSync(user.password, 10)
+
+        await db.collection('users').insertOne({
+                name: user.name,
+                email: user.email,
+                password: passwordHash,
+        })
+
+        return res.sendStatus(201)
     }catch(err){
         return res.status(500).send('error no servidor')
     }
