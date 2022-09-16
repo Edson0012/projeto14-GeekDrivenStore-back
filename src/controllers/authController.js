@@ -16,6 +16,9 @@ export async function signUp (req , res){
                 name: user.name,
                 email: user.email,
                 password: passwordHash,
+                cep: user.cep,
+                rdn: user.rdn,
+                phone: user.phone
         })
 
         return res.sendStatus(201)
